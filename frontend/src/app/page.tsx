@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Grid, Typography } from "@mui/material";
 
 import FormUploadFiles from "@/components/FormUploadFiles";
+import { analizeImage } from "@/services/analize";
 
 export default function Home() {
 
@@ -15,7 +16,24 @@ export default function Home() {
     setSelectedImage(imageUrl);
   };
 
-  const handleAnalyze = () => { }
+  const handleAnalyze = () => {
+    if (!selectedImage) return;
+    setIsAnalyzing(true);
+
+    const multiformData = new FormData();
+    multiformData.append('file', selectedImage);
+
+    analizeImage(multiformData)
+      .then((response) => {
+        console.log("Analysis result:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error analyzing image:", error);
+      })
+      .finally(() => {
+        setIsAnalyzing(false);
+      });
+  }
 
   return (
     <Grid container spacing={2} size={12} justifyContent="center" alignItems="center" mt={5}>
