@@ -6,6 +6,7 @@ import { Grid, Typography } from "@mui/material";
 
 import FormUploadFiles from "@/components/FormUploadFiles";
 import { analizeImage } from "@/services/analize";
+import { Loading } from "@/components/Loading";
 
 export default function Home() {
 
@@ -45,7 +46,13 @@ export default function Home() {
         </Grid>
 
         <Grid size={8} alignItems="center" justifyContent="center" m='auto' bgcolor='white'>
-          <FormUploadFiles selectedImage={selectedImage} handleSelectImage={handleSelectImage} handleAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
+
+          {
+            !isAnalyzing ?
+              <FormUploadFiles selectedImage={selectedImage} handleSelectImage={handleSelectImage} handleAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
+              : <Loading />
+          }
+
         </Grid>
 
       </Grid>
