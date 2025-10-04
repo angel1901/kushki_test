@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import {
     Box,
     Button,
@@ -12,8 +12,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImageIcon from "@mui/icons-material/Image";
 
 interface UploadFormProps {
-    selectedImage: string | null;
-    handleSelectImage: (imageUrl: string) => void;
+    selectedImage: File | null;
+    handleSelectImage: (imageUrl: File) => void;
     handleAnalyze: () => void;
     isAnalyzing: boolean;
 }
@@ -25,6 +25,7 @@ export default function FormUploadFiles({
     isAnalyzing,
 }: Readonly<UploadFormProps>) {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [preview, setPreview] = useState<string | null>(null);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -40,7 +41,8 @@ export default function FormUploadFiles({
             const reader = new FileReader();
             reader.onload = (event) => {
                 if (event.target?.result) {
-                    handleSelectImage(event.target.result as string);
+                    handleSelectImage(file);
+                    setPreview(event.target.result as string);
                 }
             };
             reader.readAsDataURL(file);
@@ -104,7 +106,7 @@ export default function FormUploadFiles({
                                 <Box sx={{ position: "relative", maxWidth: 480, mx: "auto" }}>
                                     <Box
                                         component="img"
-                                        src={selectedImage || "/placeholder.svg"}
+                                        src={preview || "/placeholder.svg"}
                                         alt="Selected preview"
                                         sx={{ width: "100%", height: "auto", borderRadius: 2, boxShadow: 3 }}
                                     />
