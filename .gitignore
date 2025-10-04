@@ -1,0 +1,49 @@
+# compiled output
+/backend/dist
+/backend/node_modules
+/backend/build
+
+# Logs
+/backend/logs
+/backend/package-lock.json
+/backend/*.log
+/backend/npm-debug.log*
+/backend/pnpm-debug.log*
+/backend/yarn-debug.log*
+/backend/yarn-error.log*
+/backend/lerna-debug.log*
+
+# OS
+/backend/.DS_Store
+.DS_Store
+
+# Tests
+/backend/coverage
+/backend/.nyc_output
+
+# IDE - VSCode
+.vscode/backend/*
+!.vscode/backend/settings.json
+!.vscode/backend/tasks.json
+!.vscode/backend/launch.json
+!.vscode/backend/extensions.json
+
+# dotenv environment variable files
+/backend/.env
+/backend/.env.development.local
+/backend/.env.test.local
+/backend/.env.production.local
+/backend/.env.local
+
+# temp directory
+.temp
+.tmp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports (https:/backend//backend/nodejs.org/backend/api/backend/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
