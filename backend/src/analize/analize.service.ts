@@ -39,7 +39,17 @@ export class AnalizeService {
      * @throws BadRequestException if the file is not valid.
      */
     private isValidFile(file: Express.Multer.File): void {
-        if (!RegExp(/^image/).exec(file.mimetype)) {
+
+        // Mime types allowed on Gemini for images => https://ai.google.dev/gemini-api/docs/image-understanding?hl=es-419#supported-formats
+        const validMimeTypes = [
+            'image/png',
+            'image/jpeg',
+            'image/webp',
+            'image/heic',
+            'image/heif',
+        ];
+
+        if (file.mimetype && !validMimeTypes.includes(file.mimetype)) {
             throw new BadRequestException('invalid file type, this service only accepts image files.');
         }
 
