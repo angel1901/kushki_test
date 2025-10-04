@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { GeminiService } from 'src/gemini/gemini.service';
 
 @Injectable()
 export class AnalizeService {
+    constructor(private readonly geminiService: GeminiService) { }
 
-    analizeFile(file: Express.Multer.File): object {
+    async analizeFile(file: Express.Multer.File) {
         try {
             if (!file) {
                 throw new BadRequestException('No file uploaded');
@@ -12,8 +14,19 @@ export class AnalizeService {
             // Validate the file
             this.isValidFile(file);
 
+            const prompt = `
+                You are an expert image analyzer.  
+                Look carefully at the following image and analyze.
+
+                1. Create a short, descriptive sentence summarizing what the image shows.
+                2. Identify up to 5 key visual elements, objects, animals, people, or concepts.
+                3. For each element, include its label and a confidence value between 0 and 1.
+            `;
+
+            const response = await this.geminiService.analyzeImage(file, prompt);
+
             return {
-                'status': 'success', 'message': 'File analyzed successfully', 'data': []
+                'status': 'success', 'message': 'File analyzed successfully', 'data': response
             };
         } catch (error) {
             return { 'status': 'error', 'message': error?.message };
