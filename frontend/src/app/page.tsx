@@ -9,10 +9,10 @@ import { analizeImage } from "@/services/analize";
 
 export default function Home() {
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
 
-  const handleSelectImage = (imageUrl: string) => {
+  const handleSelectImage = (imageUrl: File) => {
     setSelectedImage(imageUrl);
   };
 
