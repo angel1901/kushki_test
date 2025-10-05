@@ -82,13 +82,13 @@ Each app should have its own `.env` file (see examples below).
 ### **Backend (.env)**
 ```env
 # Server
-GOOGLE_API_KEY=your_google_api_key
+GEMINI_API_KEY=your_google_api_key
 ```
 The API key is provided by email for security
 
 ### **Frontend (.env)**
 ```env
-NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
 ---
@@ -123,7 +123,7 @@ cd frontend
 npm run dev
 ```
 
-Ensure the **frontend `.env`** variable `NEXT_PUBLIC_API_BASE_URL` matches your backend’s URL.
+Ensure the **frontend `.env`** variable `NEXT_PUBLIC_BASE_URL` matches your backend’s URL.
 
 
 **Author:** ✨ _Angel Ramirez_  
