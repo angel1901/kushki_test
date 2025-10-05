@@ -8,6 +8,7 @@ import FormUploadFiles from "@/components/FormUploadFiles";
 import { analizeImage } from "@/services/analize";
 import { Loading } from "@/components/Loading";
 import { ResultsDisplay } from "@/components/ShowAnalize";
+import { ErrorDisplay } from "@/components/ErrorDisplay";
 
 export default function Home() {
 
@@ -23,13 +24,15 @@ export default function Home() {
   const handleAnalyze = () => {
     if (!selectedImage) return;
     setIsAnalyzing(true);
+    setAnalizeResponse(null);
 
     const multiformData = new FormData();
     multiformData.append('file', selectedImage);
 
     analizeImage(multiformData)
       .then((response) => {
-        setAnalizeResponse(response?.data?.data);
+        setAnalizeResponse(response?.data);
+        setIsAnalyzing(false);
       })
       .catch((error) => {
         console.error("Error analyzing image:", error);
@@ -62,8 +65,14 @@ export default function Home() {
                 } else {
                   return <Loading />;
                 }
+              } else if (analizeResponse?.status !== 'success') {
+                return <ErrorDisplay
+                  message={analizeResponse?.message || 'An unexpected error occurred during analysis.'}
+                  onRetry={handleAnalyze}
+                  onDismiss={hanldeClear}
+                />
               } else {
-                return <ResultsDisplay results={analizeResponse} onReset={hanldeClear} previewImage={previewImage} />;
+                return <ResultsDisplay results={analizeResponse?.data} onReset={hanldeClear} previewImage={previewImage} />;
               }
             })()
           }
