@@ -16,6 +16,8 @@ interface UploadFormProps {
     handleSelectImage: (imageUrl: File) => void;
     handleAnalyze: () => void;
     isAnalyzing: boolean;
+    setPreviewImage: (imageUrl: string | null) => void;
+    previewImage: string | null;
 }
 
 export default function FormUploadFiles({
@@ -23,9 +25,11 @@ export default function FormUploadFiles({
     handleSelectImage,
     handleAnalyze,
     isAnalyzing,
+    setPreviewImage,
+    previewImage
 }: Readonly<UploadFormProps>) {
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [preview, setPreview] = useState<string | null>(null);
+
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -42,7 +46,7 @@ export default function FormUploadFiles({
             reader.onload = (event) => {
                 if (event.target?.result) {
                     handleSelectImage(file);
-                    setPreview(event.target.result as string);
+                    setPreviewImage(event.target.result as string);
                 }
             };
             reader.readAsDataURL(file);
@@ -106,7 +110,7 @@ export default function FormUploadFiles({
                                 <Box sx={{ position: "relative", maxWidth: 480, mx: "auto" }}>
                                     <Box
                                         component="img"
-                                        src={preview || "/placeholder.svg"}
+                                        src={previewImage || "/placeholder.svg"}
                                         alt="Selected preview"
                                         sx={{ width: "100%", height: "auto", borderRadius: 2, boxShadow: 3 }}
                                     />
@@ -115,7 +119,6 @@ export default function FormUploadFiles({
                                             position: "absolute",
                                             inset: 0,
                                             bgcolor: "rgba(0,0,0,0)",
-                                            borderRadius: 2,
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center",
