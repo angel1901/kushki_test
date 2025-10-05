@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImageIcon from "@mui/icons-material/Image";
+import SnackbarComponent from "./SnackbarComponent";
 
 interface UploadFormProps {
     selectedImage: File | null;
-    handleSelectImage: (imageUrl: File) => void;
+    handleSelectImage: (imageUrl: File | null) => void;
     handleAnalyze: () => void;
     isAnalyzing: boolean;
     setPreviewImage: (imageUrl: string | null) => void;
@@ -30,6 +31,9 @@ export default function FormUploadFiles({
 }: Readonly<UploadFormProps>) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarStatus, setSnackbarStatus] = useState<'success' | 'error'>('success');
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -41,7 +45,14 @@ export default function FormUploadFiles({
             'image/heif',
         ];
 
-        if (file && validMimeTypes.includes(file.type)) {
+        if (file) {
+            if (!validMimeTypes.includes(file.type)) {
+                setPreviewImage(null);
+                handleSelectImage(null);
+                showSnackbar('Invalid file type. Please upload an image file (PNG, JPG, WEBP, HEIC, HEIF).', 'error');
+
+                return;
+            }
             const reader = new FileReader();
             reader.onload = (event) => {
                 if (event.target?.result) {
@@ -50,8 +61,15 @@ export default function FormUploadFiles({
                 }
             };
             reader.readAsDataURL(file);
+            showSnackbar('File uploaded successfully', 'success');
         }
     };
+
+    const showSnackbar = (message: string, status: 'success' | 'error') => {
+        setOpenSnackbar(true);
+        setSnackbarMessage(message);
+        setSnackbarStatus(status);
+    }
 
     const handleUploadClick = () => {
         fileInputRef.current?.click();
@@ -158,6 +176,8 @@ export default function FormUploadFiles({
                     )}
                 </Box>
             </CardContent>
+
+            <SnackbarComponent open={openSnackbar} handleClose={() => setOpenSnackbar(false)} variant={snackbarStatus} message={snackbarMessage} />
         </Card>
     );
 }
