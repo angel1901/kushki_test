@@ -49,8 +49,8 @@ export default function Home() {
       <Grid container spacing={2} size={12}>
 
         <Grid size={12}>
-          <Typography align="center" variant="h3">AI Image Analysis</Typography>
-          <Typography align="center" variant="h5">Upload an image and let AI identify its contents</Typography>
+          <Typography align="center" variant="h5">AI Image Analysis</Typography>
+          <Typography align="center" variant="h6">Upload an image and let AI identify its contents</Typography>
         </Grid>
 
         <Grid size={8} alignItems="center" justifyContent="center" m='auto' bgcolor='white'>
